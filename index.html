@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RailMate - Smart Coach & Seat Finder</title>
+  <style>
+    body {
+      font-family: Arial;
+      padding: 20px;
+      background-color: #f0f0f0;
+    }
+    h1 {
+      color: #007bff;
+    }
+    input, button {
+      padding: 10px;
+      font-size: 16px;
+      margin: 5px 0;
+    }
+    #result {
+      margin-top: 20px;
+      background-color: #fff;
+      padding: 15px;
+      border-radius: 5px;
+      box-shadow: 0 0 8px rgba(0, 0, 0, 0.1);
+    }
+  </style>
+</head>
+<body>
+
+  <h1>🚆 RailMate</h1>
+  <p>Enter your PNR number to find your coach and seat:</p>
+
+  <input type="text" id="pnr" placeholder="e.g., 1234567890">
+  <button onclick="findMySeat()">Find My Seat</button>
+
+  <div id="result"></div>
+
+  <script>
+    // Fake/mock PNR data
+    const pnrData = {
+      "1234567890": {
+        train: "Shatabdi Express",
+        coach: "C1",
+        seat: "23",
+        platform: "6",
+        coach_position: "Near Gate 1"
+      },
+      "9876543210": {
+        train: "Rajdhani Express",
+        coach: "B3",
+        seat: "45",
+        platform: "2",
+        coach_position: "Near Gate 3"
+      }
+    };
+
+    function findMySeat() {
+      const userPNR = document.getElementById('pnr').value;
+      const details = pnrData[userPNR];
+
+      if (details) {
+        document.getElementById('result').innerHTML = `
+          <h2>Your Journey Details:</h2>
+          <p><strong>Train:</strong> ${details.train}</p>
+          <p><strong>Coach:</strong> ${details.coach}</p>
+          <p><strong>Seat No.:</strong> ${details.seat}</p>
+          <p><strong>Platform No.:</strong> ${details.platform}</p>
+          <p><strong>Coach Position:</strong> ${details.coach_position}</p>
+        `;
+        speakIt(`Train ${details.train}. Coach ${details.coach}, Seat number ${details.seat}, on Platform ${details.platform}, near ${details.coach_position}`);
+      } else {
+        document.getElementById('result').innerHTML = `<p style="color:red;">PNR not found. Please try again.</p>`;
+      }
+    }
+
+    function speakIt(text) {
+      const msg = new SpeechSynthesisUtterance(text);
+      window.speechSynthesis.speak(msg);
+    }
+  </script>
+
+</body>
+</html>
+
